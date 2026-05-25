@@ -26,7 +26,6 @@ function ComplaintCard({ complaint, onUpdate, isOfficer = false }) {
     }
   };
 
-  // For officers: show status flow ASSIGNED → IN_PROGRESS → RESOLVED
   const getOfficerStatusOptions = () => {
     const currentStatus = complaint.status;
     const options = [];
@@ -45,73 +44,59 @@ function ComplaintCard({ complaint, onUpdate, isOfficer = false }) {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 rounded-2xl shadow-xl hover:scale-105 transition duration-300 mb-6">
-
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="text-xl font-semibold flex-1">
-          {complaint.description}
-        </h3>
-        <span className="text-sm text-gray-400">#{complaint.id}</span>
+    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 p-6 shadow-2xl shadow-slate-950/20 transition duration-300 hover:-translate-y-1 hover:bg-slate-900/80">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500 opacity-70 transition duration-300 group-hover:opacity-100" />
+      <div className="relative flex justify-between items-start gap-6 mb-4">
+        <div className="min-w-0">
+          <h3 className="truncate text-xl font-semibold text-white">{complaint.description}</h3>
+          <p className="mt-2 text-sm text-slate-400">
+            Reported on {complaint.created_at ? new Date(complaint.created_at).toLocaleDateString() : "-"}
+          </p>
+        </div>
+        <span className="text-sm text-slate-400">#{complaint.id}</span>
       </div>
 
-      <div className="flex flex-wrap gap-4 text-sm text-gray-300 mb-4">
-        <span>Severity: 
-          <span className="ml-2 text-red-400 font-semibold">
-            {complaint.severity || "N/A"}
-          </span>
-        </span>
-        
-        <span>Type: 
-          <span className="ml-2 text-purple-400 font-semibold">
-            {complaint.issue_type || "N/A"}
-          </span>
-        </span>
-
-        <span>Status: 
-          <span className={`ml-2 font-semibold ${getStatusColor(complaint.status)}`}>
-            {complaint.status}
-          </span>
-        </span>
-
-        {complaint.created_at && (
-          <span>Created: 
-            <span className="ml-2 text-gray-400">
-              {new Date(complaint.created_at).toLocaleDateString()}
-            </span>
-          </span>
-        )}
+      <div className="grid gap-3 sm:grid-cols-2 text-sm text-slate-300 mb-5">
+        <div className="rounded-2xl bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Severity</p>
+          <p className="mt-2 font-semibold text-red-300">{complaint.severity || "N/A"}</p>
+        </div>
+        <div className="rounded-2xl bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Type</p>
+          <p className="mt-2 font-semibold text-purple-300">{complaint.issue_type || "N/A"}</p>
+        </div>
+        <div className="rounded-2xl bg-white/5 p-4 col-span-full sm:col-span-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Current Status</p>
+          <p className={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${getStatusColor(complaint.status)}`}>{complaint.status}</p>
+        </div>
       </div>
 
       {onUpdate && (
-        <div className="mt-3">
-          <label className="text-sm text-gray-300 mr-2">
-            {isOfficer ? "Update Status:" : "Update Status:"}
-          </label>
-          {isOfficer ? (
-            <select
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              className="px-3 py-2 bg-white/20 rounded-lg text-white"
-            >
-              {getOfficerStatusOptions().map(opt => (
-                <option key={opt.value} value={opt.value} className="bg-gray-900">
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <select
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              className="px-3 py-2 bg-white/20 rounded-lg text-white"
-            >
-              <option value="PENDING" className="bg-gray-900">PENDING</option>
-              <option value="ASSIGNED" className="bg-gray-900">ASSIGNED</option>
-              <option value="IN_PROGRESS" className="bg-gray-900">IN_PROGRESS</option>
-              <option value="RESOLVED" className="bg-gray-900">RESOLVED</option>
-              <option value="REJECTED" className="bg-gray-900">REJECTED</option>
-            </select>
-          )}
+        <div className="mt-2">
+          <label className="mb-2 block text-sm font-medium text-slate-300">Update Status</label>
+          <select
+            value={selectedStatus}
+            onChange={handleStatusChange}
+            className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
+          >
+            {isOfficer
+              ? getOfficerStatusOptions().map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-slate-900 text-white">
+                    {opt.label}
+                  </option>
+                ))
+              : [
+                  { value: 'PENDING', label: 'PENDING' },
+                  { value: 'ASSIGNED', label: 'ASSIGNED' },
+                  { value: 'IN_PROGRESS', label: 'IN_PROGRESS' },
+                  { value: 'RESOLVED', label: 'RESOLVED' },
+                  { value: 'REJECTED', label: 'REJECTED' },
+                ].map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-slate-900 text-white">
+                    {opt.label}
+                  </option>
+                ))}
+          </select>
         </div>
       )}
     </div>

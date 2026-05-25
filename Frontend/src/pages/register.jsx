@@ -45,13 +45,11 @@ function Register() {
         password: formData.password,
         role: "CITIZEN",
       });
-
       alert("Registration successful! Please login.");
       navigate("/login");
     } catch (err) {
       console.error("Registration error:", err.response?.data || err.message);
       let errorMessage = "Registration failed. Please try again.";
-
       const detail = err.response?.data?.detail;
       if (detail) {
         if (Array.isArray(detail)) {
@@ -70,7 +68,6 @@ function Register() {
       } else if (err.message) {
         errorMessage = err.message;
       }
-
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -78,55 +75,65 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
-      <nav className="flex justify-between items-center p-6 bg-black bg-opacity-30">
-        <button onClick={() => navigate("/")} className="text-3xl font-bold hover:text-gray-300">
+    <div className="min-h-screen overflow-hidden bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.18),transparent_22%),radial-gradient(circle_at_80%_30%,rgba(192,132,252,0.16),transparent_24%)]" />
+      <nav className="relative z-10 flex items-center justify-between px-6 py-6 bg-black/25 backdrop-blur-xl border-b border-white/10">
+        <button onClick={() => navigate("/")} className="text-3xl font-bold tracking-tight hover:text-slate-100">
           CivicMind AI
         </button>
         <button
           onClick={() => navigate("/login")}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold"
+          className="rounded-full bg-blue-500/90 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:bg-blue-400"
         >
           Login
         </button>
       </nav>
 
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-        <div className="bg-white bg-opacity-10 p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-3xl font-bold mb-2 text-center">Citizen Registration</h2>
-          <p className="text-gray-300 text-center mb-6">Create your citizen account</p>
+      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-6 py-12">
+        <div className="w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/75 px-8 py-10 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+          <div className="mb-8 text-center">
+            <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300/90">Citizen onboarding</p>
+            <h1 className="text-4xl font-bold text-white">Create your account</h1>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-slate-400">
+              Register to report local issues and follow resolutions from your dashboard.
+            </p>
+          </div>
 
-          {error && <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>}
+          {error && (
+            <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100 mb-6">
+              {error}
+            </div>
+          )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-2">Full Name</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 bg-white bg-opacity-20 border border-gray-500 rounded text-white placeholder-gray-400"
+                className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
                 placeholder="Enter your name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 bg-white bg-opacity-20 border border-gray-500 rounded text-white placeholder-gray-400"
+                className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
                 placeholder="Enter your email"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -134,13 +141,13 @@ function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-white bg-opacity-20 border border-gray-500 rounded text-white placeholder-gray-400"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
                   placeholder="Enter password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-300"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white"
                 >
                   {showPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
@@ -148,7 +155,7 @@ function Register() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Confirm Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
@@ -156,13 +163,13 @@ function Register() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-white bg-opacity-20 border border-gray-500 rounded text-white placeholder-gray-400"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
                   placeholder="Confirm password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-300"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white"
                 >
                   {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
@@ -172,23 +179,23 @@ function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-bold py-2 rounded transition"
+              className="w-full rounded-3xl bg-gradient-to-r from-emerald-500 to-lime-500 px-6 py-4 text-base font-semibold text-slate-950 shadow-xl shadow-emerald-500/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Registering..." : "Register"}
             </button>
           </form>
 
-          <p className="text-center text-gray-300 mt-4">
-            Already have an account?{" "}
+          <p className="mt-6 text-center text-sm text-slate-400">
+            Already have an account?{' '}
             <button
               onClick={() => navigate("/login")}
-              className="text-blue-400 hover:text-blue-300 font-semibold"
+              className="font-semibold text-cyan-300 hover:text-cyan-200"
             >
               Login here
             </button>
           </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,15 +1,13 @@
 import Navbar from "../components/navbar";
 import ComplaintCard from "../components/ComplaintCard";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import API from "../services/api";
-import { AuthContext } from "../context/authContext";
 
 function OfficerDashboard() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [profile, setProfile] = useState(null);
-  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     fetchProfile();
@@ -27,7 +25,6 @@ function OfficerDashboard() {
 
   const fetchComplaints = async () => {
     try {
-      // Fetch complaints assigned to this officer
       const response = await API.get("/officer/complaints");
       setComplaints(response.data);
     } catch (err) {
@@ -41,7 +38,6 @@ function OfficerDashboard() {
   const handleStatusUpdate = async (complaintId, newStatus) => {
     try {
       await API.put(`/officer/complaints/${complaintId}/status?new_status=${newStatus}`);
-      // Refresh the list after update
       fetchComplaints();
     } catch (err) {
       console.error("Error updating status:", err);
@@ -53,80 +49,84 @@ function OfficerDashboard() {
     <>
       <Navbar title="Officer Dashboard" />
 
-      <div className="p-10">
-        {/* Officer Profile Card */}
+      <div className="relative overflow-hidden p-10">
+        <div className="pointer-events-none absolute right-8 top-12 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute left-4 bottom-10 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
+
         {profile && (
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
-            <h2 className="text-2xl font-bold mb-4">Welcome, {profile.name}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="mb-8 rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Email</p>
-                <p className="font-semibold">{profile.email}</p>
+                <h2 className="text-3xl font-semibold text-white">Welcome back, {profile.name}</h2>
+                <p className="mt-2 text-sm text-slate-400">Stay on top of your assigned issues.</p>
               </div>
-              <div>
-                <p className="text-gray-400 text-sm">Role</p>
-                <p className="font-semibold">{profile.role}</p>
+              <div className="rounded-3xl bg-white/5 px-5 py-3 text-sm text-slate-200 ring-1 ring-white/10">
+                Officer ID #{profile.id}
               </div>
-              <div>
-                <p className="text-gray-400 text-sm">Department ID</p>
-                <p className="font-semibold">{profile.department_id || "Not Assigned"}</p>
-              </div>
-              <div>
-                <p className="text-gray-400 text-sm">Officer ID</p>
-                <p className="font-semibold">#{profile.id}</p>
-              </div>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { label: "Email", value: profile.email },
+                { label: "Role", value: profile.role },
+                { label: "Department", value: profile.department_id || "Not Assigned" },
+                { label: "Assigned", value: complaints.length },
+              ].map((card) => (
+                <div key={card.label} className="rounded-3xl bg-white/5 p-5 text-slate-200 ring-1 ring-white/10 transition hover:-translate-y-0.5 hover:bg-white/10">
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{card.label}</p>
+                  <p className="mt-3 text-xl font-semibold text-white">{card.value}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Status Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-xl p-4">
-            <p className="text-yellow-400 text-sm">Assigned</p>
-            <p className="text-2xl font-bold">
-              {complaints.filter(c => c.status === "ASSIGNED").length}
-            </p>
-          </div>
-          <div className="bg-blue-500/20 border border-blue-500/50 rounded-xl p-4">
-            <p className="text-blue-400 text-sm">In Progress</p>
-            <p className="text-2xl font-bold">
-              {complaints.filter(c => c.status === "IN_PROGRESS").length}
-            </p>
-          </div>
-          <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4">
-            <p className="text-green-400 text-sm">Resolved</p>
-            <p className="text-2xl font-bold">
-              {complaints.filter(c => c.status === "RESOLVED").length}
-            </p>
-          </div>
-          <div className="bg-purple-500/20 border border-purple-500/50 rounded-xl p-4">
-            <p className="text-purple-400 text-sm">Total</p>
-            <p className="text-2xl font-bold">{complaints.length}</p>
-          </div>
-        </div>
+        <div className="grid gap-6 lg:grid-cols-[1fr_0.6fr]">
+          <section className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+            <h3 className="text-2xl font-semibold text-white mb-4">Assigned Complaints</h3>
+            <p className="text-sm text-slate-400 mb-6">Resolve complaints with a single status update.</p>
 
-        {/* Complaints List */}
-        <h3 className="text-xl font-bold mb-4">My Assigned Complaints</h3>
-        
-        {loading ? (
-          <p className="text-center">Loading complaints...</p>
-        ) : error ? (
-          <p className="text-red-400 text-center">{error}</p>
-        ) : complaints.length === 0 ? (
-          <div className="text-center py-12 bg-white/5 rounded-xl">
-            <p className="text-gray-400">No complaints assigned to you yet.</p>
-            <p className="text-sm text-gray-500 mt-2">Contact admin to assign complaints.</p>
-          </div>
-        ) : (
-          complaints.map((complaint) => (
-            <ComplaintCard 
-              key={complaint.id} 
-              complaint={complaint} 
-              onUpdate={(id, status) => handleStatusUpdate(id, status)}
-              isOfficer={true}
-            />
-          ))
-        )}
+            {loading ? (
+              <p className="text-center text-slate-400">Loading complaints...</p>
+            ) : error ? (
+              <p className="text-center text-red-400">{error}</p>
+            ) : complaints.length === 0 ? (
+              <div className="rounded-3xl bg-white/5 p-8 text-center text-slate-400">
+                <p>No complaints assigned to you yet.</p>
+                <p className="mt-2 text-sm text-slate-500">Ask admin to assign new tasks.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {complaints.map((complaint) => (
+                  <ComplaintCard
+                    key={complaint.id}
+                    complaint={complaint}
+                    onUpdate={(id, status) => handleStatusUpdate(id, status)}
+                    isOfficer={true}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+
+          <aside className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+            <h4 className="text-xl font-semibold text-white mb-4">Quick Actions</h4>
+            <div className="space-y-4">
+              <div className="rounded-3xl bg-white/5 p-4 text-slate-300">
+                <p className="text-sm text-slate-400">Tip</p>
+                <p className="mt-2 text-sm">Update complaint statuses as soon as progress changes to keep citizens informed.</p>
+              </div>
+              <div className="rounded-3xl bg-white/5 p-4 text-slate-300">
+                <p className="text-sm text-slate-400">Status Flow</p>
+                <p className="mt-2 text-sm">Assigned → In Progress → Resolved</p>
+              </div>
+              <div className="rounded-3xl border border-cyan-500/20 bg-cyan-500/5 p-4 text-cyan-200">
+                <p className="text-sm font-semibold">Need help?</p>
+                <p className="mt-2 text-sm">Contact an administrator if you need more assignments.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </>
   );

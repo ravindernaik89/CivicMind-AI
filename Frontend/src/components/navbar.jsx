@@ -12,11 +12,14 @@ function Navbar({ title }) {
   };
 
   return (
-    <nav className="flex justify-between items-center px-8 py-4 bg-white/10 backdrop-blur-lg border-b border-white/20 shadow-lg">
-      <h1 className="text-2xl font-bold tracking-wide">{title}</h1>
-      <button 
+    <nav className="flex flex-col gap-4 px-8 py-6 bg-slate-950/70 backdrop-blur-xl border-b border-white/10 shadow-xl shadow-slate-950/10 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-white">{title}</h1>
+        <p className="text-sm text-slate-400">Your secure civic operations workspace</p>
+      </div>
+      <button
         onClick={handleLogout}
-        className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition duration-300"
+        className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-red-500 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:-translate-y-0.5"
       >
         Logout
       </button>

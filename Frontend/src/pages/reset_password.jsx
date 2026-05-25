@@ -1,5 +1,3 @@
-// src/pages/reset_password.jsx
-
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import API from "../services/api";
@@ -7,7 +5,7 @@ import API from "../services/api";
 function ResetPassword() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  
+
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,7 +17,6 @@ function ResetPassword() {
 
   const navigate = useNavigate();
 
-  // Step 1: Request password reset
   const handleRequestReset = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,10 +24,7 @@ function ResetPassword() {
     setLoading(true);
 
     try {
-      const res = await API.post("/auth/password-reset-request", {
-        email,
-      });
-      
+      const res = await API.post("/auth/password-reset-request", { email });
       setMessage(res.data.message || "Password reset link sent to your email");
       setStep("sent");
     } catch (err) {
@@ -40,12 +34,11 @@ function ResetPassword() {
     }
   };
 
-  // Step 2: Reset password with token
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
-    
+
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -59,11 +52,10 @@ function ResetPassword() {
     setLoading(true);
 
     try {
-      const res = await API.post("/auth/password-reset", {
+      await API.post("/auth/password-reset", {
         token: resetToken,
         new_password: newPassword,
       });
-      
       setMessage("Password reset successfully! Redirecting to login...");
       setTimeout(() => {
         navigate("/login");
@@ -76,132 +68,129 @@ function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
-      <nav className="flex justify-between items-center p-6 bg-black bg-opacity-30">
-        <button onClick={() => navigate("/")} className="text-3xl font-bold hover:text-gray-300">
+    <div className="min-h-screen overflow-hidden bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(79,70,229,0.2),transparent_24%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.14),transparent_20%)]" />
+      <nav className="relative z-10 flex items-center justify-between px-6 py-6 bg-black/25 backdrop-blur-xl border-b border-white/10">
+        <button onClick={() => navigate("/")} className="text-3xl font-bold tracking-tight hover:text-slate-100">
           CivicMind AI
         </button>
         <button
           onClick={() => navigate("/login")}
-          className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold"
+          className="rounded-full bg-purple-500/90 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/20 transition hover:bg-purple-400"
         >
           Back to Login
         </button>
       </nav>
 
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2">
-
-          <h2 className="text-3xl font-bold text-center mb-8xl w-96">
-            {step === "request" && "Reset Password"}
-            {step === "sent" && "Check Your Email"}
-            {step === "reset" && "New Password"}
-          </h2>
+      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-6 py-12">
+        <div className="w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/80 p-10 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-300/80">Password recovery</p>
+            <h1 className="mt-4 text-4xl font-bold text-white">Reset your password</h1>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-slate-400">
+              Follow the steps below to request a reset link and update your account password.
+            </p>
+          </div>
 
           {error && (
-            <div className="bg-red-500/20 border border-red-500 text-red-200 px-4 py-2 rounded-lg mb-4 text-sm">
+            <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100 mb-5">
               {error}
             </div>
           )}
 
           {message && (
-            <div className="bg-green-500/20 border border-green-500 text-green-200 px-4 py-2 rounded-lg mb-4 text-sm">
+            <div className="rounded-3xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-100 mb-5">
               {message}
             </div>
           )}
 
-          {/* Step 1: Request password reset */}
           {step === "request" && (
-            <form onSubmit={handleRequestReset}>
-              <p className="text-gray-300 text-sm mb-4">
-                Enter your registered email address to receive a password reset link.
-              </p>
-              <input
-                type="email"
-                className="w-full p-3 mb-4 rounded-xl bg-white/20 text-white placeholder-gray-400"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+            <form onSubmit={handleRequestReset} className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                <input
+                  type="email"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-300/20"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-purple-600 rounded-xl hover:bg-purple-700 transition font-semibold disabled:opacity-50"
+                className="w-full rounded-3xl bg-gradient-to-r from-purple-500 to-fuchsia-500 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-fuchsia-500/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Sending..." : "Send Reset Link"}
               </button>
             </form>
           )}
 
-          {/* Step 2: Email sent confirmation */}
           {step === "sent" && (
-            <div className="text-center">
-              <div className="mb-4">
-                <svg className="w-16 h-16 mx-auto text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+            <div className="space-y-6 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-500/15 text-green-300">
+                ✓
               </div>
-              <p className="text-gray-300 text-sm mb-4">
-                If an account exists with the email <strong>{email}</strong>, you will receive a password reset link shortly.
-              </p>
-              <p className="text-gray-400 text-xs mb-6">
-                In demo mode, the reset token is displayed on the next screen. Use it to reset your password.
-              </p>
+              <p className="text-slate-300">If an account exists with the email <strong>{email}</strong>, you will receive a reset link soon.</p>
               <button
                 onClick={() => {
                   setStep("reset");
                   setResetToken(localStorage.getItem("last_reset_token") || "");
                 }}
-                className="w-full py-3 bg-purple-600 rounded-xl hover:bg-purple-700 transition font-semibold"
+                className="w-full rounded-3xl bg-purple-600 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-purple-500/20 transition hover:-translate-y-0.5"
               >
                 Continue to Reset
               </button>
             </div>
           )}
 
-          {/* Step 3: Enter new password */}
           {step === "reset" && (
-            <form onSubmit={handleResetPassword}>
-              <p className="text-gray-300 text-sm mb-4">
-                Enter the reset token and your new password.
-              </p>
-              <input
-                type="text"
-                className="w-full p-3 mb-4 rounded-xl bg-white/20 text-white placeholder-gray-400"
-                placeholder="Reset Token"
-                value={resetToken}
-                onChange={(e) => setResetToken(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                className="w-full p-3 mb-4 rounded-xl bg-white/20 text-white placeholder-gray-400"
-                placeholder="New Password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                className="w-full p-3 mb-4 rounded-xl bg-white/20 text-white placeholder-gray-400"
-                placeholder="Confirm New Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+            <form onSubmit={handleResetPassword} className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Reset Token</label>
+                <input
+                  type="text"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-300/20"
+                  placeholder="Reset Token"
+                  value={resetToken}
+                  onChange={(e) => setResetToken(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">New Password</label>
+                <input
+                  type="password"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-300/20"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-300/20"
+                  placeholder="Confirm New Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-purple-600 rounded-xl hover:bg-purple-700 transition font-semibold disabled:opacity-50"
+                className="w-full rounded-3xl bg-gradient-to-r from-purple-500 to-fuchsia-500 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-fuchsia-500/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Resetting..." : "Reset Password"}
               </button>
             </form>
           )}
-
         </div>
-      </div>
+      </main>
     </div>
   );
 }

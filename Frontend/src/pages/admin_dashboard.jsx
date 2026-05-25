@@ -191,7 +191,7 @@ function AdminDashboard() {
       case "IN_PROGRESS": return "bg-blue-500";
       case "RESOLVED": return "bg-green-500";
       case "REJECTED": return "bg-red-500";
-      default: return "bg-gray-500";
+      default: return "bg-slate-500";
     }
   };
 
@@ -210,11 +210,11 @@ function AdminDashboard() {
     <>
       <Navbar title="Admin Dashboard" />
       
-      <div className="p-6 bg-gray-900 min-h-screen">
+      <div className="p-6 bg-slate-950 min-h-screen">
         {/* Officer Profile Modal */}
         {selectedOfficer && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-xl p-8 max-w-2xl w-full mx-4 shadow-2xl">
+            <div className="bg-slate-900 rounded-xl p-8 max-w-2xl w-full mx-4 shadow-2xl">
               <div className="flex justify-between items-start mb-6">
                 <h2 className="text-2xl font-bold text-white">Officer Profile</h2>
                 <button
@@ -257,7 +257,7 @@ function AdminDashboard() {
               <div className="mt-8 flex gap-4">
                 <button
                   onClick={() => setSelectedOfficer(null)}
-                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold"
+                  className="flex-1 bg-slate-800 hover:bg-slate-600 text-white px-6 py-2 rounded-lg font-semibold"
                 >
                   Close
                 </button>
@@ -273,7 +273,7 @@ function AdminDashboard() {
             className={`px-6 py-2 rounded-lg font-semibold whitespace-nowrap ${
               activeTab === "dashboard" 
                 ? "bg-purple-600 text-white" 
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
             📊 Dashboard
@@ -283,7 +283,7 @@ function AdminDashboard() {
             className={`px-6 py-2 rounded-lg font-semibold whitespace-nowrap ${
               activeTab === "complaints" 
                 ? "bg-purple-600 text-white" 
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
             📝 Complaints
@@ -293,7 +293,7 @@ function AdminDashboard() {
             className={`px-6 py-2 rounded-lg font-semibold whitespace-nowrap ${
               activeTab === "officers" 
                 ? "bg-purple-600 text-white" 
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
             👮 Officers
@@ -303,7 +303,7 @@ function AdminDashboard() {
             className={`px-6 py-2 rounded-lg font-semibold whitespace-nowrap ${
               activeTab === "departments" 
                 ? "bg-purple-600 text-white" 
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
             🏢 Departments
@@ -313,7 +313,7 @@ function AdminDashboard() {
             className={`px-6 py-2 rounded-lg font-semibold whitespace-nowrap ${
               activeTab === "users" 
                 ? "bg-purple-600 text-white" 
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
             }`}
           >
             👥 All Users
@@ -349,17 +349,17 @@ function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-800 p-6 rounded-xl">
+              <div className="bg-slate-900 p-6 rounded-xl">
                 <p className="text-gray-400 text-sm">Total Citizens</p>
                 <p className="text-3xl font-bold text-white">{stats.total_citizens}</p>
               </div>
               
-              <div className="bg-gray-800 p-6 rounded-xl">
+              <div className="bg-slate-900 p-6 rounded-xl">
                 <p className="text-gray-400 text-sm">Total Officers</p>
                 <p className="text-3xl font-bold text-white">{stats.total_officers}</p>
               </div>
               
-              <div className="bg-gray-800 p-6 rounded-xl">
+              <div className="bg-slate-900 p-6 rounded-xl">
                 <p className="text-gray-400 text-sm">Total Departments</p>
                 <p className="text-3xl font-bold text-white">{stats.total_departments}</p>
               </div>
@@ -372,10 +372,10 @@ function AdminDashboard() {
           <div>
             <h2 className="text-2xl font-bold text-white mb-6">Complaint Management</h2>
             
-            <div className="bg-gray-800 rounded-xl overflow-hidden">
+            <div className="bg-slate-900 rounded-xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
-                  <thead className="bg-gray-700 text-gray-300">
+                  <thead className="bg-slate-800 text-gray-300">
                     <tr>
                       <th className="p-4">ID</th>
                       <th className="p-4">Description</th>
@@ -387,7 +387,7 @@ function AdminDashboard() {
                   </thead>
                   <tbody className="text-gray-300">
                     {complaints.map((complaint) => (
-                      <tr key={complaint.id} className="border-b border-gray-700 hover:bg-gray-750">
+                      <tr key={complaint.id} className="border-b border-slate-700 hover:bg-slate-800">
                         <td className="p-4">#{complaint.id}</td>
                         <td className="p-4 max-w-xs truncate">{complaint.description}</td>
                         <td className="p-4">
@@ -399,7 +399,7 @@ function AdminDashboard() {
                           <select
                             value={complaint.department_id || ""}
                             onChange={(e) => handleAssignDepartment(complaint.id, e.target.value)}
-                            className="bg-gray-700 text-white px-3 py-1 rounded text-sm"
+                            className="bg-slate-800 text-white px-3 py-1 rounded text-sm"
                           >
                             <option value="">Select Department</option>
                             {departments.map((dept) => (
@@ -411,7 +411,7 @@ function AdminDashboard() {
                           <select
                             value={complaint.assigned_officer_id || ""}
                             onChange={(e) => handleAssignOfficer(complaint.id, e.target.value)}
-                            className="bg-gray-700 text-white px-3 py-1 rounded text-sm"
+                            className="bg-slate-800 text-white px-3 py-1 rounded text-sm"
                           >
                             <option value="">Unassigned</option>
                             {officers.map((officer) => (
@@ -425,7 +425,7 @@ function AdminDashboard() {
                           <select
                             value={complaint.status}
                             onChange={(e) => handleUpdateStatus(complaint.id, e.target.value)}
-                            className="bg-gray-700 text-white px-3 py-1 rounded text-sm"
+                            className="bg-slate-800 text-white px-3 py-1 rounded text-sm"
                           >
                             <option value="PENDING">Pending</option>
                             <option value="IN_PROGRESS">In Progress</option>
@@ -448,7 +448,7 @@ function AdminDashboard() {
             <h2 className="text-2xl font-bold text-white mb-6">Officer Management</h2>
             
             {/* Create Officer Form */}
-            <div className="bg-gray-800 p-6 rounded-xl mb-6">
+            <div className="bg-slate-900 p-6 rounded-xl mb-6">
               <h3 className="text-xl font-semibold text-white mb-4">Add New Officer (One per Department)</h3>
               <form onSubmit={handleCreateOfficer} className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <input
@@ -456,7 +456,7 @@ function AdminDashboard() {
                   placeholder="Officer Name"
                   value={newOfficer.name}
                   onChange={(e) => setNewOfficer({...newOfficer, name: e.target.value})}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="bg-slate-800 text-white px-4 py-2 rounded-lg"
                   required
                 />
                 <input
@@ -464,7 +464,7 @@ function AdminDashboard() {
                   placeholder="Officer Email"
                   value={newOfficer.email}
                   onChange={(e) => setNewOfficer({...newOfficer, email: e.target.value})}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="bg-slate-800 text-white px-4 py-2 rounded-lg"
                   required
                 />
                 <input
@@ -472,13 +472,13 @@ function AdminDashboard() {
                   placeholder="Password"
                   value={newOfficer.password}
                   onChange={(e) => setNewOfficer({...newOfficer, password: e.target.value})}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="bg-slate-800 text-white px-4 py-2 rounded-lg"
                   required
                 />
                 <select
                   value={newOfficer.department_id}
                   onChange={(e) => setNewOfficer({...newOfficer, department_id: e.target.value})}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="bg-slate-800 text-white px-4 py-2 rounded-lg"
                   required
                 >
                   <option value="">Select Department</option>
@@ -496,20 +496,20 @@ function AdminDashboard() {
             </div>
 
             {/* Officers List */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden">
+            <div className="bg-slate-900 rounded-xl overflow-hidden">
               {/* Search Bar */}
-              <div className="p-4 border-b border-gray-700 bg-gray-750">
+              <div className="p-4 border-b border-slate-700 bg-slate-800">
                 <input
                   type="text"
                   placeholder="Search officers by name or email..."
                   value={searchOfficer}
                   onChange={(e) => setSearchOfficer(e.target.value)}
-                  className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="w-full bg-slate-800 text-white px-4 py-2 rounded-lg"
                 />
               </div>
               
               <table className="w-full text-left">
-                <thead className="bg-gray-700 text-gray-300">
+                <thead className="bg-slate-800 text-gray-300">
                   <tr>
                     <th className="p-4">ID</th>
                     <th className="p-4">Name</th>
@@ -522,7 +522,7 @@ function AdminDashboard() {
                   {filteredOfficers.map((officer) => (
                     <tr 
                       key={officer.id} 
-                      className="border-b border-gray-700 hover:bg-gray-750 cursor-pointer transition"
+                      className="border-b border-slate-700 hover:bg-slate-800 cursor-pointer transition"
                       onClick={() => setSelectedOfficer(officer)}
                     >
                       <td className="p-4">#{officer.id}</td>
@@ -561,7 +561,7 @@ function AdminDashboard() {
             <h2 className="text-2xl font-bold text-white mb-6">Department Management</h2>
             
             {/* Create Department Form */}
-            <div className="bg-gray-800 p-6 rounded-xl mb-6">
+            <div className="bg-slate-900 p-6 rounded-xl mb-6">
               <h3 className="text-xl font-semibold text-white mb-4">Add New Department</h3>
               <form onSubmit={handleCreateDepartment} className="flex gap-4">
                 <input
@@ -569,7 +569,7 @@ function AdminDashboard() {
                   placeholder="Department Name"
                   value={newDepartment}
                   onChange={(e) => setNewDepartment(e.target.value)}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg flex-1"
+                  className="bg-slate-800 text-white px-4 py-2 rounded-lg flex-1"
                   required
                 />
                 <button
@@ -590,13 +590,13 @@ function AdminDashboard() {
                   placeholder="Search departments by name..."
                   value={searchDepartment}
                   onChange={(e) => setSearchDepartment(e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-lg"
+                  className="w-full bg-slate-900 border border-slate-700 text-white px-4 py-2 rounded-lg"
                 />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredDepartments.map((dept) => (
-                  <div key={dept.id} className="bg-gray-800 p-6 rounded-xl flex justify-between items-center">
+                  <div key={dept.id} className="bg-slate-900 p-6 rounded-xl flex justify-between items-center">
                     <div>
                       <h3 className="text-lg font-semibold text-white">{dept.name}</h3>
                       <p className="text-gray-400 text-sm">ID: {dept.id}</p>
@@ -623,18 +623,18 @@ function AdminDashboard() {
             <h2 className="text-2xl font-bold text-white mb-6">User Accounts</h2>
             
             {/* Search and Filter */}
-            <div className="bg-gray-800 p-4 rounded-xl mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-900 p-4 rounded-xl mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
                 placeholder="Search by name or email..."
                 value={searchUser}
                 onChange={(e) => setSearchUser(e.target.value)}
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                className="bg-slate-800 text-white px-4 py-2 rounded-lg"
               />
               <select
                 value={filterUserRole}
                 onChange={(e) => setFilterUserRole(e.target.value)}
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg"
+                className="bg-slate-800 text-white px-4 py-2 rounded-lg"
               >
                 <option value="ALL">All Roles</option>
                 <option value="ADMIN">Admin</option>
@@ -644,9 +644,9 @@ function AdminDashboard() {
             </div>
 
             {/* Users Table */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden">
+            <div className="bg-slate-900 rounded-xl overflow-hidden">
               <table className="w-full text-left text-sm">
-                <thead className="bg-gray-700 text-gray-300">
+                <thead className="bg-slate-800 text-gray-300">
                   <tr>
                     <th className="p-4">ID</th>
                     <th className="p-4">Name</th>
@@ -658,7 +658,7 @@ function AdminDashboard() {
                 </thead>
                 <tbody className="text-gray-300">
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="border-b border-gray-700 hover:bg-gray-750">
+                    <tr key={user.id} className="border-b border-slate-700 hover:bg-slate-800">
                       <td className="p-4">#{user.id}</td>
                       <td className="p-4 font-semibold">{user.name}</td>
                       <td className="p-4">{user.email}</td>
@@ -684,7 +684,7 @@ function AdminDashboard() {
                 <p className="p-6 text-center text-gray-400">No users found</p>
               )}
               
-              <div className="bg-gray-750 p-4 text-gray-400 text-sm">
+              <div className="bg-slate-800 p-4 text-gray-400 text-sm">
                 Total: {filteredUsers.length} user(s) 
                 {filterUserRole !== "ALL" && ` (${filterUserRole})`}
               </div>
