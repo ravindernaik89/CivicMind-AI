@@ -141,7 +141,7 @@ function Login() {
 
           {selectedRole === "OFFICER" && (
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2 text-gray-300">Department (Optional)</label>
+              <label className="block text-sm font-medium mb-2 text-gray-300">Department</label>
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
