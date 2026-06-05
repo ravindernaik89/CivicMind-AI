@@ -89,12 +89,12 @@ function Register() {
         </button>
       </nav>
 
-      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-6 py-12">
-        <div className="w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/75 px-8 py-10 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
-          <div className="mb-8 text-center">
-            <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300/90">Citizen onboarding</p>
-            <h1 className="text-4xl font-bold text-white">Create your account</h1>
-            <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-slate-400">
+      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-8">
+        <div className="w-full max-w-md rounded-[26px] border border-white/10 bg-slate-950/75 px-5 py-7 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+          <div className="mb-5 text-center">
+            <p className="mb-2 text-xs uppercase tracking-[0.35em] text-cyan-300/90">Citizen onboarding</p>
+            <h1 className="text-2xl font-bold text-white">Create your account</h1>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-5 text-slate-400">
               Register to report local issues and follow resolutions from your dashboard.
             </p>
           </div>

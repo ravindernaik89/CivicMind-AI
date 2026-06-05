@@ -8,6 +8,9 @@ function Dashboard() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [locationLat, setLocationLat] = useState("");
+  const [locationLng, setLocationLng] = useState("");
+  const [locationError, setLocationError] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,8 +57,16 @@ function Dashboard() {
     setLoading(true);
 
     try {
+      if (locationLat === "" || locationLng === "") {
+        setErrorMessage("Please select the issue location using latitude and longitude.");
+        setLoading(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("description", description);
+      formData.append("location_lat", locationLat);
+      formData.append("location_lng", locationLng);
       if (image) {
         formData.append("image", image);
       }
@@ -64,6 +75,9 @@ function Dashboard() {
       setDescription("");
       setImage(null);
       setImagePreview(null);
+      setLocationLat("");
+      setLocationLng("");
+      setLocationError("");
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -93,12 +107,12 @@ function Dashboard() {
     <>
       <Navbar title="Citizen Dashboard" />
 
-      <div className="relative overflow-hidden p-10">
+      <div className="relative mx-auto max-w-6xl overflow-hidden px-4 py-6">
         <div className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
         <div className="pointer-events-none absolute left-6 top-80 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
 
-        <div className="grid gap-8 xl:grid-cols-[1.25fr_0.95fr]">
-          <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
+        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
             <div className="mb-6">
               <h1 className="text-4xl font-semibold text-white">Welcome, {userName}</h1>
               <p className="mt-2 text-sm text-slate-400">Submit a complaint and track issue progress from your dashboard.</p>
@@ -163,6 +177,74 @@ function Dashboard() {
                 </div>
               </div>
 
+              <div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <label className="block text-sm font-medium text-slate-300">Issue Location</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!navigator.geolocation) {
+                        setLocationError("Geolocation is not supported by your browser.");
+                        return;
+                      }
+                      navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                          setLocationLat(position.coords.latitude.toFixed(6));
+                          setLocationLng(position.coords.longitude.toFixed(6));
+                          setLocationError("");
+                        },
+                        () => setLocationError("Unable to fetch current location. Please enter coordinates manually.")
+                      );
+                    }}
+                    className="rounded-2xl bg-cyan-500/20 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/30"
+                  >
+                    Use current location
+                  </button>
+                </div>
+
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <input
+                    type="number"
+                    step="0.000001"
+                    value={locationLat}
+                    onChange={(e) => {
+                      setLocationLat(e.target.value);
+                      setLocationError("");
+                    }}
+                    placeholder="Latitude"
+                    className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
+                  />
+                  <input
+                    type="number"
+                    step="0.000001"
+                    value={locationLng}
+                    onChange={(e) => {
+                      setLocationLng(e.target.value);
+                      setLocationError("");
+                    }}
+                    placeholder="Longitude"
+                    className="w-full rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-300/20"
+                  />
+                </div>
+
+                {locationLat && locationLng && (
+                  <div className="mt-3 rounded-3xl border border-white/10 bg-slate-950/80 p-4 text-sm text-slate-300">
+                    <p>Selected location: {locationLat}, {locationLng}</p>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${locationLat},${locationLng}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex text-cyan-300 hover:text-cyan-200"
+                    >
+                      View on Google Maps
+                    </a>
+                  </div>
+                )}
+                {locationError && (
+                  <p className="mt-3 text-sm text-red-300">{locationError}</p>
+                )}
+              </div>
+
               {imagePreview && (
                 <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
                   <p className="mb-3 text-sm font-medium text-slate-300">Preview</p>
@@ -180,8 +262,8 @@ function Dashboard() {
             </form>
           </div>
 
-          <aside className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/75 p-6 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
-            <div className="rounded-3xl bg-white/5 p-5">
+          <aside className="space-y-5 rounded-3xl border border-white/10 bg-slate-950/75 p-5 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
+            <div className="rounded-3xl bg-white/5 p-4">
               <h3 className="text-xl font-semibold text-white">Complaint Highlights</h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {[
@@ -224,8 +306,8 @@ function Dashboard() {
           </aside>
         </div>
 
-        <section className="mt-10 rounded-3xl border border-white/10 bg-slate-950/75 p-8 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
-          <h2 className="text-2xl font-semibold text-white mb-6">My Complaints</h2>
+        <section className="mt-8 rounded-3xl border border-white/10 bg-slate-950/75 p-6 shadow-xl shadow-slate-950/20 backdrop-blur-xl">
+          <h2 className="text-2xl font-semibold text-white mb-5">My Complaints</h2>
           {complaintsLoading ? (
             <p className="text-center text-slate-400">Loading your complaints...</p>
           ) : myComplaints.length === 0 ? (

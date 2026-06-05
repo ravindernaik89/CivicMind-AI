@@ -100,12 +100,12 @@ function Login() {
         </button>
       </nav>
 
-      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-6 py-12">
-        <div className="w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/70 p-10 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
-          <div className="mb-8 flex flex-col gap-2 text-center">
+      <main className="relative z-10 flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
+        <div className="w-full max-w-lg rounded-[28px] border border-white/10 bg-slate-950/70 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+          <div className="mb-6 flex flex-col gap-2 text-center">
             <p className="text-sm uppercase tracking-[0.25em] text-cyan-300/90">Secure access for every user</p>
-            <h1 className="text-4xl font-bold text-white">Sign in to CivicMind AI</h1>
-            <p className="mx-auto max-w-md text-sm text-slate-400">
+            <h1 className="text-3xl font-bold text-white">Sign in to CivicMind AI</h1>
+            <p className="mx-auto max-w-sm text-sm text-slate-400">
               Choose your role and access the dashboard for citizens, officers, or administrators.
             </p>
           </div>

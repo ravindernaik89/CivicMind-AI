@@ -19,6 +19,8 @@ class ComplaintResponse(BaseModel):
     user_id: Optional[int] = None
     department_id: Optional[int] = None
     assigned_officer_id: Optional[int] = None
+    location_lat: Optional[float] = None
+    location_lng: Optional[float] = None
 
     class Config:
         from_attributes = True

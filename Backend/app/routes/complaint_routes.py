@@ -22,11 +22,13 @@ router = APIRouter(prefix="/complaints", tags=["Complaints"])
 @router.post("/", response_model=ComplaintResponse)
 async def create_new_complaint(
     description: str = Form(...),
+    location_lat: float | None = Form(None),
+    location_lng: float | None = Form(None),
     image: UploadFile = File(None),
     db: Session = Depends(get_db),
     user=Depends(require_role("CITIZEN")),
 ):
-    return await create_complaint(db, user, description, image)
+    return await create_complaint(db, user, description, image, location_lat, location_lng)
 
 
 # Citizen views their own complaints

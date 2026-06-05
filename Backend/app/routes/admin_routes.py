@@ -217,6 +217,12 @@ def get_all_complaints_admin(
             "department_name": complaint.department.name if complaint.department else None,
             "assigned_officer_id": complaint.assigned_officer_id,
             "assigned_officer_name": complaint.assigned_officer.name if complaint.assigned_officer else None,
+            "location_lat": complaint.location_lat,
+            "location_lng": complaint.location_lng,
+            "location_url": (
+                f"https://www.google.com/maps/search/?api=1&query={complaint.location_lat},{complaint.location_lng}"
+                if complaint.location_lat is not None and complaint.location_lng is not None else None
+            ),
         })
     return result
 

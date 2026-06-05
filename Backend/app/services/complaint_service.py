@@ -20,9 +20,9 @@ UPLOAD_DIR = "uploads/complaints"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-async def create_complaint(db: Session, user, description: str, image: UploadFile = None):
+async def create_complaint(db: Session, user, description: str, image: UploadFile = None, location_lat: float | None = None, location_lng: float | None = None):
     """
-    Create a complaint with optional image, AI detection, and auto-routing
+    Create a complaint with optional image, AI detection, mapped location, and auto-routing
     """
     try:
         issue_type = "UNKNOWN"
@@ -63,6 +63,8 @@ async def create_complaint(db: Session, user, description: str, image: UploadFil
             severity=severity,
             status="PENDING",
             user_id=user.id,
+            location_lat=location_lat,
+            location_lng=location_lng,
         )
 
         db.add(new_complaint)

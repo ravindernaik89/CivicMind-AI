@@ -65,6 +65,22 @@ function ComplaintCard({ complaint, onUpdate, isOfficer = false }) {
           <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Type</p>
           <p className="mt-2 font-semibold text-purple-300">{complaint.issue_type || "N/A"}</p>
         </div>
+        {complaint.location_lat != null && complaint.location_lng != null && (
+          <div className="rounded-2xl bg-white/5 p-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Location</p>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${complaint.location_lat},${complaint.location_lng}`}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex text-cyan-300 hover:text-cyan-200"
+            >
+              View on Google Maps
+            </a>
+            <p className="mt-2 text-sm text-slate-400">
+              {complaint.location_lat.toFixed ? complaint.location_lat.toFixed(6) : complaint.location_lat}, {complaint.location_lng.toFixed ? complaint.location_lng.toFixed(6) : complaint.location_lng}
+            </p>
+          </div>
+        )}
         <div className="rounded-2xl bg-white/5 p-4 col-span-full sm:col-span-2">
           <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Current Status</p>
           <p className={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${getStatusColor(complaint.status)}`}>{complaint.status}</p>

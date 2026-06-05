@@ -58,6 +58,20 @@ if inspector.has_table("complaints"):
                 conn.commit()
         except Exception:
             pass  # column might already exist
+    if "location_lat" not in cols:
+        try:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE complaints ADD COLUMN location_lat FLOAT"))
+                conn.commit()
+        except Exception:
+            pass
+    if "location_lng" not in cols:
+        try:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE complaints ADD COLUMN location_lng FLOAT"))
+                conn.commit()
+        except Exception:
+            pass
 
 # Initialize default departments
 db = SessionLocal()

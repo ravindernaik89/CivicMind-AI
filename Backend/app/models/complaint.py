@@ -1,6 +1,6 @@
 # app/models/complaint.py
 
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
@@ -21,6 +21,8 @@ class Complaint(Base):
     
     # Assigned officer for the complaint
     assigned_officer_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    location_lat = Column(Float, nullable=True)
+    location_lng = Column(Float, nullable=True)
 
     user = relationship("User", foreign_keys=[user_id])
     department = relationship("Department")

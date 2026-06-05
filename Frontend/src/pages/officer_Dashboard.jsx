@@ -49,12 +49,12 @@ function OfficerDashboard() {
     <>
       <Navbar title="Officer Dashboard" />
 
-      <div className="relative overflow-hidden p-10">
+      <div className="relative mx-auto max-w-6xl overflow-hidden px-4 py-6">
         <div className="pointer-events-none absolute right-8 top-12 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" />
         <div className="pointer-events-none absolute left-4 bottom-10 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
 
         {profile && (
-          <div className="mb-8 rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+          <div className="mb-6 rounded-3xl border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-3xl font-semibold text-white">Welcome back, {profile.name}</h2>
@@ -65,7 +65,7 @@ function OfficerDashboard() {
               </div>
             </div>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { label: "Email", value: profile.email },
                 { label: "Role", value: profile.role },
@@ -82,7 +82,7 @@ function OfficerDashboard() {
         )}
 
         <div className="grid gap-6 lg:grid-cols-[1fr_0.6fr]">
-          <section className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+          <section className="rounded-3xl border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
             <h3 className="text-2xl font-semibold text-white mb-4">Assigned Complaints</h3>
             <p className="text-sm text-slate-400 mb-6">Resolve complaints with a single status update.</p>
 
@@ -109,7 +109,7 @@ function OfficerDashboard() {
             )}
           </section>
 
-          <aside className="rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+          <aside className="rounded-3xl border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
             <h4 className="text-xl font-semibold text-white mb-4">Quick Actions</h4>
             <div className="space-y-4">
               <div className="rounded-3xl bg-white/5 p-4 text-slate-300">
